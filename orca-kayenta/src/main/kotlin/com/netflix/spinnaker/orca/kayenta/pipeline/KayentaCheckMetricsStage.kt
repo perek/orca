@@ -16,7 +16,11 @@
 
 package com.netflix.spinnaker.orca.kayenta.pipeline
 
+import com.netflix.spinnaker.orca.ext.withTask
+import com.netflix.spinnaker.orca.kayenta.tasks.AggregateCanaryResultsTask
+import com.netflix.spinnaker.orca.kayenta.tasks.AggregateMetricsResultsTask
 import com.netflix.spinnaker.orca.pipeline.StageDefinitionBuilder
+import com.netflix.spinnaker.orca.pipeline.TaskNode
 import com.netflix.spinnaker.orca.pipeline.graph.StageGraphBuilder
 import com.netflix.spinnaker.orca.pipeline.model.Stage
 import org.springframework.stereotype.Component
@@ -24,11 +28,12 @@ import java.time.Clock
 
 
 @Component
-class KayentaMetricsStage(private val clock: Clock) : StageDefinitionBuilder {
+class KayentaCheckMetricsStage(private val clock: Clock) : StageDefinitionBuilder {
 
-  /*override fun taskGraph(stage: Stage, builder: TaskNode.Builder) {
-    builder.withTask<AggregateCanaryResultsTask>("aggregateCanaryResults")
-  }*/
+  override fun taskGraph(stage: Stage, builder: TaskNode.Builder) {
+    builder.withTask<AggregateMetricsResultsTask>("aggregateMetrics")
+  }
+
 
   /*override fun beforeStages(parent: Stage, graph: StageGraphBuilder) {
 
@@ -58,6 +63,6 @@ class KayentaMetricsStage(private val clock: Clock) : StageDefinitionBuilder {
 
   companion object {
     @JvmStatic
-    val STAGE_TYPE = "checkMetrics"
+    val STAGE_TYPE = "kayentaCheckMetrics"
   }
 }

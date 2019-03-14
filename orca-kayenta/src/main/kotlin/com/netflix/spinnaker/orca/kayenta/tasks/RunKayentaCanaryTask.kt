@@ -30,6 +30,7 @@ import com.netflix.spinnaker.orca.pipeline.model.Stage
 import org.slf4j.LoggerFactory
 import org.springframework.stereotype.Component
 import java.util.Collections.singletonMap
+import java.util.logging.Logger
 
 @Component
 class RunKayentaCanaryTask(
@@ -47,6 +48,7 @@ class RunKayentaCanaryTask(
       context.scopes.from(pairs.first())
     } ?: context.scopes
 
+    Logger.getLogger(this.javaClass.toString()).info(context.scopes.toString())
     val canaryPipelineExecutionId = kayentaService.create(
       context.canaryConfigId,
       stage.execution.application,
