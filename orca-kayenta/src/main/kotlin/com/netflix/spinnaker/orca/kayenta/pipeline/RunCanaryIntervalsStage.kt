@@ -130,14 +130,17 @@ class RunCanaryIntervalsStage(private val clock: Clock) : StageDefinitionBuilder
       val controlScope = CanaryScope(
         scope.controlScope,
         scope.controlLocation,
-        start,
-        end,
+        start.minus(config.offsetWindow),
+        end.minus(config.offsetWindow),
         config.step.seconds,
         scope.extendedScopeParams
       )
+
       val experimentScope = controlScope.copy(
         scope = scope.experimentScope,
-        location = scope.experimentLocation
+        location = scope.experimentLocation,
+        start = start,
+        end = end
       )
 
       requestScopes[scope.scopeName] = CanaryScopes(
