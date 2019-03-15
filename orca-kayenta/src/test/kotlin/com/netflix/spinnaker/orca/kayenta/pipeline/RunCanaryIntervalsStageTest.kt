@@ -309,8 +309,8 @@ object RunCanaryIntervalsStageTest : Spek({
         values("", listOf("wait", "runCanary"), 0L),
         values("0", listOf("wait", "runCanary"), 0L),
         values("30", listOf("wait", "runCanary"), 30L)
-      ) { offsetMins, expectedStageTypes, expectedOffsetMins ->
-        and("baseline analysis should start $offsetMins minutes before the canary") {
+      ) { baselineOffsetMins, expectedStageTypes, expectedBaselineOffsetMins ->
+        and("baseline analysis should start $baselineOffsetMins minutes before the canary") {
           val kayentaCanaryStage = stage {
             type = "kayentaCanary"
             name = "Run Kayenta Canary"
@@ -322,7 +322,7 @@ object RunCanaryIntervalsStageTest : Spek({
               )),
               "scoreThresholds" to mapOf("marginal" to 75, "pass" to 90),
               "lifetimeHours" to "1",
-              "offsetWindowInMins" to offsetMins,
+              "baselineOffsetAnalysisInMins" to baselineOffsetMins,
               "beginCanaryAnalysisAfterMins" to "0"
             )
           }
@@ -338,7 +338,7 @@ object RunCanaryIntervalsStageTest : Spek({
             assertThat(aroundStages).extracting("type").isEqualTo(expectedStageTypes)
             System.out.println(aroundStages.controlScopes())
             assertThat(aroundStages.controlScopes().map { it.start })
-              .allMatch { it == clock.instant().minus(expectedOffsetMins, MINUTES) }
+              .allMatch { it == clock.instant().minus(expectedBaselineOffsetMins, MINUTES) }
           }
         }
       }
@@ -351,8 +351,8 @@ object RunCanaryIntervalsStageTest : Spek({
         values("", listOf("runCanary"), 0L),
         values("0", listOf("runCanary"), 0L),
         values("30", listOf("runCanary"), 30L)
-      ) { offsetMins, expectedStageTypes, expectedOffsetMins ->
-        and("baseline analysis should start $offsetMins minutes before the canary") {
+      ) { baselineOffsetMins, expectedStageTypes, expectedBaselineOffsetMins ->
+        and("baseline analysis should start $baselineOffsetMins minutes before the canary") {
           val kayentaCanaryStage = stage {
             type = "kayentaCanary"
             name = "Run Kayenta Canary"
@@ -366,7 +366,7 @@ object RunCanaryIntervalsStageTest : Spek({
               )),
               "scoreThresholds" to mapOf("marginal" to 75, "pass" to 90),
               "lifetimeHours" to "1",
-              "offsetWindowInMins" to offsetMins,
+              "baselineOffsetAnalysisInMins" to baselineOffsetMins,
               "beginCanaryAnalysisAfterMins" to "0"
             )
           }
@@ -382,7 +382,7 @@ object RunCanaryIntervalsStageTest : Spek({
             assertThat(aroundStages).extracting("type").isEqualTo(expectedStageTypes)
             System.out.println(aroundStages.controlScopes())
             assertThat(aroundStages.controlScopes().map { it.start })
-              .allMatch { it == clock.instant().minus(expectedOffsetMins, MINUTES) }
+              .allMatch { it == clock.instant().minus(expectedBaselineOffsetMins, MINUTES) }
           }
         }
       }
