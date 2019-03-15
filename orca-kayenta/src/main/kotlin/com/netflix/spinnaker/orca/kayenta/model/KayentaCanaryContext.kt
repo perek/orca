@@ -41,7 +41,7 @@ data class KayentaCanaryContext(
   private val beginCanaryAnalysisAfterMins: Int = 0,
 
   @JsonProperty(access = JsonProperty.Access.READ_WRITE)
-  private val baselineOffsetAnalysisInMins: Int = 0,
+  private val baselineAnalysisOffsetInMins: Int = 0,
 
   @JsonProperty(access = JsonProperty.Access.READ_WRITE)
   private val lookbackMins: Int = 0,
@@ -60,7 +60,7 @@ data class KayentaCanaryContext(
   val beginCanaryAnalysisAfter = Duration.ofMinutes(beginCanaryAnalysisAfterMins.toLong())
 
   @JsonIgnore
-  val offsetWindow = Duration.ofMinutes(baselineOffsetAnalysisInMins.toLong())
+  val baselineAnalysisOffset = Duration.ofMinutes(baselineAnalysisOffsetInMins.toLong())
 
   @JsonIgnore
   val lookback = Duration.ofMinutes(lookbackMins.toLong())
