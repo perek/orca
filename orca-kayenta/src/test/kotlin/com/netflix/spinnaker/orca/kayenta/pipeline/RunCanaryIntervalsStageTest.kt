@@ -322,7 +322,7 @@ object RunCanaryIntervalsStageTest : Spek({
               )),
               "scoreThresholds" to mapOf("marginal" to 75, "pass" to 90),
               "lifetimeHours" to "1",
-              "baselineOffsetAnalysisInMins" to baselineOffsetMins,
+              "baselineAnalysisOffsetInMins" to baselineOffsetMins,
               "beginCanaryAnalysisAfterMins" to "0"
             )
           }
