@@ -53,6 +53,7 @@ public class FindArtifactFromExecutionTask implements Task {
     Map<String, Object> context = stage.getContext();
     Map<String, Object> outputs = new HashMap<>();
     String pipeline = (String) context.get("pipeline");
+    String displayName = (String) context.get("displayName");
     ExpectedArtifact expectedArtifact = objectMapper.convertValue(context.get("expectedArtifact"), ExpectedArtifact.class);
     ExecutionOptions executionOptions = objectMapper.convertValue(context.get("executionOptions"), ExecutionOptions.class);
 
@@ -65,6 +66,10 @@ public class FindArtifactFromExecutionTask implements Task {
       return new TaskResult(ExecutionStatus.TERMINAL, new HashMap<>(), outputs);
     }
 
+    if(displayName != null && !displayName.isEmpty()) {
+      match.setName(displayName);
+    }
+    
     outputs.put("resolvedExpectedArtifacts", Collections.singletonList(expectedArtifact));
     outputs.put("artifacts", Collections.singletonList(match));
 
