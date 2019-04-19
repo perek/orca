@@ -53,9 +53,9 @@ public class FindArtifactFromExecutionTask implements Task {
     Map<String, Object> context = stage.getContext();
     Map<String, Object> outputs = new HashMap<>();
     String pipeline = (String) context.get("pipeline");
-    String displayName = (String) context.get("displayName");
     ExpectedArtifact expectedArtifact = objectMapper.convertValue(context.get("expectedArtifact"), ExpectedArtifact.class);
     ExecutionOptions executionOptions = objectMapper.convertValue(context.get("executionOptions"), ExecutionOptions.class);
+    ArtifactOptions artifactOptions = objectMapper.convertValue(context.get("artifactOptions"), ArtifactOptions.class);
 
     List<Artifact> priorArtifacts = artifactResolver.getArtifactsForPipelineId(pipeline, executionOptions.toCriteria());
 
@@ -66,14 +66,21 @@ public class FindArtifactFromExecutionTask implements Task {
       return new TaskResult(ExecutionStatus.TERMINAL, new HashMap<>(), outputs);
     }
 
-    if(displayName != null && !displayName.isEmpty()) {
-      match.setName(displayName);
+    if(artifactOptions != null
+        && !artifactOptions.renameArtifact != null
+        && !artifactOptions.renameArtifact.isEmpty()) {
+      match.setName(artifactOptions.renameArtifact);
     }
     
     outputs.put("resolvedExpectedArtifacts", Collections.singletonList(expectedArtifact));
     outputs.put("artifacts", Collections.singletonList(match));
 
     return new TaskResult(ExecutionStatus.SUCCEEDED, outputs, outputs);
+  }
+
+  @Data
+  private static class ArtifactOptions {
+    String renameArtifact;
   }
 
   @Data
