@@ -67,7 +67,7 @@ public class FindArtifactFromExecutionTask implements Task {
     }
 
     if(artifactOptions != null
-        && !artifactOptions.renameArtifact != null
+        && artifactOptions.renameArtifact != null
         && !artifactOptions.renameArtifact.isEmpty()) {
       match.setName(artifactOptions.renameArtifact);
     }
