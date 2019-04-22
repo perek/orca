@@ -63,8 +63,9 @@ public class FindArtifactFromExecutionTask implements Task {
 
     if (match == null && expectedArtifact.isUseDefaultArtifact()) {
       match = expectedArtifact.getDefaultArtifact();
+      expectedArtifact.setBoundArtifact(match);
     }
-    
+
     if (match == null) {
       outputs.put("exception", "No artifact matching " + expectedArtifact + " found among " + priorArtifacts);
       return new TaskResult(ExecutionStatus.TERMINAL, new HashMap<>(), outputs);
